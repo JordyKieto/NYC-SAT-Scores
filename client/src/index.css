@@ -12,3 +12,13 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.customToolTip {
+  background-color: white;
+  padding: 6px;
+  font-size: small;
+}
+
+.hidden {
+  display: none;
+}
