@@ -1,12 +1,10 @@
 import React from 'react';
 import './App.css';
-import SATChart  from './SATChart';
-// (()=>{
-//   fetch('data').then(res=>res.json().then(data => console.log(data)))
-// })()
+import AggregateView from './AggregateView';
+
 function App() {
   return (
-    <SATChart/>
+    <AggregateView/>
   );
 }
 
