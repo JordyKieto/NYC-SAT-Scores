@@ -91,7 +91,7 @@ class AggregateView extends React.Component {
                 <Scatter name="White" data={this.state.scores.white} fill="#d884cb" className={this.state.showWhite? "": "hidden"}
                     shape={<Dot onClick={this.setActive.bind(this)} r={5}/>}>
                 </Scatter>
-                <Scatter name="Hispanic" data={this.state.scores.white} fill="#f47142" className={this.state.showHispanic? "": "hidden"}
+                <Scatter name="Hispanic" data={this.state.scores.hispanic} fill="#f47142" className={this.state.showHispanic? "": "hidden"}
                     shape={<Dot onClick={this.setActive.bind(this)} r={5}/>}>
                 </Scatter>
             </ScatterChart>
