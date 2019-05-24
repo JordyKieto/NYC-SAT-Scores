@@ -31,3 +31,20 @@
     transform: rotate(360deg);
   }
 }
+
+.Range-Slider-Container{
+  height: 455px;
+  position: relative;
+  left: 701px;
+  top: -575px;
+  width: 89px;
+}
+
+.Range-Slider-Container p {
+  right: 35px;
+  position: relative;
+}
+
+#root{
+  height: 654px;
+}

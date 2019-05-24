@@ -1,11 +1,13 @@
 import {ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Label, Dot} from 'recharts';
 import React from 'react';
 import DetailView from './DetailView';
+import RangeSlider from './RangeSlider';
 
 class AggregateView extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            allScores: {},
             scores: {},
             schools: [],
             showBlack: true,
@@ -16,12 +18,13 @@ class AggregateView extends React.Component {
         }
     };
     async componentDidMount() {
-        if (Object.keys(this.state.scores).length === 0){
+        if (Object.keys(this.state.allScores).length === 0){
             let res = await fetch('data');
             res = await res.json();
             this.setState({
                 scores: res.scores,
-                schools: res.schools
+                schools: res.schools,
+                allScores: res.scores
             });
         }
     };
@@ -32,33 +35,34 @@ class AggregateView extends React.Component {
     };
 
     setActive(props){
-        let school = this.state.schools[props.index];
-        let black = +this.state.scores.black[props.index].x;
-        let white = +this.state.scores.white[props.index].x;
-        let asian = +this.state.scores.asian[props.index].x;
-        let hispanic = +this.state.scores.hispanic[props.index].x;
-        let score = props.payload.y;
+        let index = props.payload[0].payload.index;
+        let school = this.state.schools[index];
+        let black = +this.state.allScores.black[index].x;
+        let white = +this.state.allScores.white[index].x;
+        let asian = +this.state.allScores.asian[index].x;
+        let hispanic = +this.state.allScores.hispanic[index].x;
+        let score = props.payload[0].payload.y;
 
-        this.setState({active: {
-                                school,
-                                black,
-                                white,
-                                asian,
-                                hispanic,
-                                other: 100 - black - white - asian - hispanic,
-                                score,
-                                }
-        });
-        console.log(this.state.active);
+        return {
+                school,
+                black,
+                white,
+                asian,
+                hispanic,
+                other: 100 - black - white - asian - hispanic,
+                score,
+        };
     };
 
     renderTooltip(props) {
         if (props.active === true) {
+            let active = this.setActive(props);
             return (
                 <div className="customToolTip">
                 <b>{this.state.schools[props.payload[0].payload.index]}</b><br></br>
                 <>Percentage of students {props.payload[0].value}%</><br></br>
                 <>SAT Score {props.payload[1].value}</>
+                <DetailView active={active}/>
                 </div>
                )
         }
@@ -95,10 +99,9 @@ class AggregateView extends React.Component {
                     shape={<Dot onClick={this.setActive.bind(this)} r={5}/>}>
                 </Scatter>
             </ScatterChart>
-            <DetailView active={this.state.active}/>
+            <RangeSlider scores={this.state.allScores} setAggState={this.setState.bind(this)}></RangeSlider>
         </>
         )
     }
 };
-
 export default AggregateView;

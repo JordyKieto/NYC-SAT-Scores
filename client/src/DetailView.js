@@ -35,7 +35,7 @@ class DetailView extends React.Component {
                 }}
             >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="school" />
+                <XAxis/>
                 <YAxis domain={[0, 800]}/>
                 <Tooltip/>
                 <Legend/>
