@@ -2,6 +2,7 @@ import {ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Lab
 import React from 'react';
 import DetailView from './DetailView';
 import RangeSlider from './RangeSlider';
+import races from './jsCommon/races';
 
 class AggregateView extends React.Component {
     constructor(props) {
@@ -10,17 +11,19 @@ class AggregateView extends React.Component {
             allScores: {},
             scores: {},
             schools: [],
-            showBlack: true,
-            showHispanic: false,
-            showWhite: false,
-            showAsian: false,
+            show: {
+                black: true,
+                hispanic: false,
+                white: false,
+                asian: false,
+            },
             active: {},
             subject: 'Math',
         }
     };
     async componentDidMount() {
         if (Object.keys(this.state.allScores).length === 0){
-            let res = await fetch('data');
+            let res = await fetch(`scores?subject=${this.state.subject}`);
             res = await res.json();
             this.setState({
                 scores: res.scores,
@@ -30,9 +33,8 @@ class AggregateView extends React.Component {
         }
     };
 
-    filterData(props) {
-        let race = `show${props.value}`
-        this.setState({[race]: !this.state[race]});
+    filterByRace({value}) {
+        this.setState({show: Object.assign({}, this.state.show, {[value]: !this.state.show[value]})});
     };
 
     setActive(props){
@@ -87,19 +89,17 @@ class AggregateView extends React.Component {
                     <Label value="Average Score (SAT Math)" angle={-90} position="insideBottomLeft" />
                 </YAxis>
                 <Tooltip cursor={{ strokeDasharray: '3 3'}} content={this.renderTooltip.bind(this)} />
-                <Legend verticalAlign="top" height={50} onClick={this.filterData.bind(this)}/>
-                <Scatter name="Black" data={this.state.scores.black} fill="#d8cb84" className={this.state.showBlack? "": "hidden"} 
-                    shape={<Dot onClick={this.setActive.bind(this)} r={5}/>}>
-                </Scatter>
-                <Scatter name="Asian" data={this.state.scores.asian} fill="#84ced8" className={this.state.showAsian? "": "hidden"}
-                    shape={<Dot onClick={this.setActive.bind(this)} r={5}/>}>
-                </Scatter>
-                <Scatter name="White" data={this.state.scores.white} fill="#d884cb" className={this.state.showWhite? "": "hidden"}
-                    shape={<Dot onClick={this.setActive.bind(this)} r={5}/>}>
-                </Scatter>
-                <Scatter name="Hispanic" data={this.state.scores.hispanic} fill="#f47142" className={this.state.showHispanic? "": "hidden"}
-                    shape={<Dot onClick={this.setActive.bind(this)} r={5}/>}>
-                </Scatter>
+                <Legend verticalAlign="top" height={50} onClick={this.filterByRace.bind(this)}/>
+                {races.map(([race, color])=>(
+                    <Scatter
+                        key={race}
+                        name={race} 
+                        data={this.state.scores[race]} 
+                        fill={color}
+                        className={this.state.show[race]? "": "hidden"} 
+                        shape={<Dot r={5}/>}>
+                    </Scatter>
+                ))}
             </ScatterChart>
             <RangeSlider scores={this.state.allScores} setAggState={this.setState.bind(this)}></RangeSlider>
         </>

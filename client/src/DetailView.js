@@ -11,14 +11,7 @@ import {
     Cell,
 } from 'recharts';
 import React from 'react';
-
-const colors = [
-    ['black', '#d8cb84'],
-    ['white', '#d884cb' ],
-    ['asian', '#84ced8'],
-    ['hispanic', '#f47142'],
-    ['other', '#bab6ae'],
-  ];
+import races from './jsCommon/races';
 
 class DetailView extends React.Component {
     constructor(props) {
@@ -88,7 +81,7 @@ class DetailView extends React.Component {
                 fill="#8884d8"
                 dataKey="value"
                 >
-                {colors.map(([race, color]) => <Cell key={`cell-${race}`} fill={color} />)}
+                {races.map(([race, color]) => <Cell key={`cell-${race}`} fill={color} />)}
                 </Pie>
             </PieChart>
             </>
