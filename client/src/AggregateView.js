@@ -14,7 +14,8 @@ class AggregateView extends React.Component {
             showHispanic: false,
             showWhite: false,
             showAsian: false,
-            active: {}
+            active: {},
+            subject: 'Math',
         }
     };
     async componentDidMount() {
@@ -59,10 +60,10 @@ class AggregateView extends React.Component {
             let active = this.setActive(props);
             return (
                 <div className="customToolTip">
-                <b>{this.state.schools[props.payload[0].payload.index]}</b><br></br>
-                <>Percentage of students {props.payload[0].value}%</><br></br>
-                <>SAT Score {props.payload[1].value}</>
-                <DetailView active={active}/>
+                    <b>{this.state.schools[props.payload[0].payload.index]}</b><br></br>
+                    <>Percentage of students {props.payload[0].value}%</><br></br>
+                    <>SAT Score {props.payload[1].value}</>
+                    <DetailView active={active}/>
                 </div>
                )
         }
@@ -70,6 +71,7 @@ class AggregateView extends React.Component {
     render() {
         return (
         <>
+            <h2 className={`graph-title`}>{`SAT Scores By Racial Makeup`}</h2>
             <ScatterChart
                 width={650}
                 height={650}

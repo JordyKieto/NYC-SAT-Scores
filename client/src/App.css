@@ -31,7 +31,6 @@
     transform: rotate(360deg);
   }
 }
-
 .Range-Slider-Container{
   height: 455px;
   position: relative;
@@ -39,12 +38,22 @@
   top: -575px;
   width: 89px;
 }
-
 .Range-Slider-Container p {
   right: 35px;
   position: relative;
 }
-
+.graph-title{
+  text-align: center;
+  margin-bottom: -18px;
+}
+.inner-pie {
+  position: relative;
+  top: -370px;
+  left: 200px;
+}
 #root{
   height: 654px;
+}
+customToolTip{
+  
 }

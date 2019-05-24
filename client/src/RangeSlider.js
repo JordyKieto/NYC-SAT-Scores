@@ -27,7 +27,7 @@ class RangeSlider extends React.Component{
                     max={800} 
                     vertical={true}
                     defaultValue={[400, 800]} 
-                    onAfterChange={this.handle.bind(this)}
+                    onChange={this.handle.bind(this)}
                     />
                 </div>
             </>
