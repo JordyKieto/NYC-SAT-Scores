@@ -2,6 +2,7 @@ import {ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Lab
 import React from 'react';
 import DetailView from './DetailView';
 import RangeSlider from './RangeSlider';
+import Checkbox from './Checkbox';
 import races from './jsCommon/races';
 
 class AggregateView extends React.Component {
@@ -20,23 +21,23 @@ class AggregateView extends React.Component {
             active: {},
             subject: 'Math',
         }
+    
     };
-    async componentDidMount() {
-        if (Object.keys(this.state.allScores).length === 0){
-            let res = await fetch(`scores?subject=${this.state.subject}`);
-            res = await res.json();
-            this.setState({
-                scores: res.scores,
-                schools: res.schools,
-                allScores: res.scores
-            });
-        }
+    async getScores(subject){
+        let res = await fetch(`scores?subject=${subject}`);
+        res = await res.json();
+        this.setState({
+            scores: res.scores,
+            schools: res.schools,
+            allScores: res.scores
+        });
+    }
+    componentWillMount() {
+       this.getScores('Math');
     };
-
     filterByRace({value}) {
         this.setState({show: Object.assign({}, this.state.show, {[value]: !this.state.show[value]})});
     };
-
     setActive(props){
         let index = props.payload[0].payload.index;
         let school = this.state.schools[index];
@@ -89,7 +90,7 @@ class AggregateView extends React.Component {
                     <Label value="Average Score (SAT Math)" angle={-90} position="insideBottomLeft" />
                 </YAxis>
                 <Tooltip cursor={{ strokeDasharray: '3 3'}} content={this.renderTooltip.bind(this)} />
-                <Legend verticalAlign="top" height={50} onClick={this.filterByRace.bind(this)}/>
+                <Legend className={`race-legend`} verticalAlign="top" height={50} onClick={this.filterByRace.bind(this)}/>
                 {races.map(([race, color])=>(
                     <Scatter
                         key={race}
@@ -102,6 +103,7 @@ class AggregateView extends React.Component {
                 ))}
             </ScatterChart>
             <RangeSlider scores={this.state.allScores} setAggState={this.setState.bind(this)}></RangeSlider>
+           <Checkbox getScores={this.getScores.bind(this)}></Checkbox>
         </>
         )
     }
